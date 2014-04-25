@@ -2,7 +2,7 @@ main = ($scope, $interval) ->
 
   new-data = -> 
     now = new Date!getTime!
-    [ 10 + Math.random!*80, 10 + Math.random!*80, Math.random!*18 + 2, now  + Math.random!* 1000 ]
+    [ 10 + Math.random!*80, 10 + Math.random!*80, Math.random!*18 + 2, now  + 2000 ]
   $scope.data = []
   $interval (->
     if $scope.data.length < 10 =>
@@ -14,16 +14,20 @@ main = ($scope, $interval) ->
       ..exit!remove!
       ..enter!append \circle
     svg.selectAll \circle
-      ..attr do
+      .attr do
         cx: -> it.0
         cy: -> it.1
-        r: -> it.2
+        r: -> 1
         fill: \#f00
         opacity: 1
-      ..each ->
-        if it.3 - now < 1000 =>
-          d3.select(@) .transition!duration 500 
-            .attr do
-              opacity: 0
-              r: 0
+      .transition!duration 500
+        .attr do
+          opacity: 0
+          r: -> it.2
+      #..each ->
+      #  if it.3 - now < 1000 =>
+      #    d3.select(@) .transition!duration 500 
+      #      .attr do
+      #        opacity: 0
+      #        r: 0
   ), 200
